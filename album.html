@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Album Kenangan - Anniversary Website</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <button id="dark-mode-toggle" class="dark-mode-btn">🌙</button>
+  <style>
+    .album-container {
+      padding: 2rem;
+      text-align: center;
+    }
+    .album-title {
+      font-size: 3rem;
+      color: #ffb6c1;
+      margin-bottom: 2rem;
+      text-shadow: 0 0 10px rgba(255, 182, 193, 0.5);
+    }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .photo-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(15px);
+      border: 2px solid rgba(255, 107, 157, 0.3);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 8px 32px rgba(255, 107, 157, 0.2);
+      position: relative;
+      cursor: pointer;
+    }
+    .photo-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 15px 40px rgba(255, 107, 157, 0.4);
+    }
+    .photo-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      transition: filter 0.3s ease;
+    }
+    .photo-card:hover img {
+      filter: brightness(1.1) saturate(1.2);
+    }
+    .photo-caption {
+      padding: 1rem;
+      color: #fff;
+      font-size: 1.1rem;
+      background: rgba(0, 0, 0, 0.3);
+    }
+    .puzzle-btn-container {
+      padding: 1rem;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      margin: 0.5rem 0;
+    }
+    .puzzle-btn {
+      background: linear-gradient(to right, #1a1a1a, #333333);
+      color: #e0e0e0;
+      border: 1px solid #555;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-family: 'Courier New', monospace;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s ease;
+    }
+    .puzzle-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(80, 80, 80, 0.7);
+      background: linear-gradient(to right, #333333, #1a1a1a);
+    }
+    .puzzle-game {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .puzzle-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .secret-code-container {
+      margin-top: 1rem;
+    }
+    .secret-code-input {
+      padding: 0.5rem;
+      border-radius: 10px;
+      border: none;
+      margin-right: 0.5rem;
+      font-size: 1rem;
+    }
+    .secret-code-btn {
+      background: linear-gradient(to right, #ff6b9d, #ff8fab);
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .secret-code-btn:hover {
+      transform: scale(1.1);
+    }
+    .puzzle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      width: 300px;
+      height: 300px;
+      margin: 1rem auto;
+    }
+    .puzzle-piece {
+      width: 100%;
+      height: 100%;
+      background-size: 300px 300px;
+      background-repeat: no-repeat;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: transform 0.2s ease;
+    }
+    .puzzle-piece:hover {
+      transform: scale(1.05);
+    }
+    .close-puzzle {
+      background: #ff6b9d;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    .back-btn {
+      background: linear-gradient(to right, #ff6b9d, #ff8fab);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      margin-top: 2rem;
+      transition: transform 0.3s ease;
+    }
+    .back-btn:hover {
+      transform: scale(1.1);
+    }
+    .image-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      max-width: 90%;
+      max-height: 90%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .modal-image {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+    .modal-caption {
+      color: #ffb6c1;
+      font-size: 1.5rem;
+      margin-top: 1rem;
+      text-shadow: 0 0 10px rgba(255, 182, 193, 0.5);
+    }
+    .close-modal {
+      background: #ff6b9d;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    .code-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.9);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+    .code-container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .photo-video {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .modal-video {
+      max-width: 100%;
+      max-height: 70vh;
+      border-radius: 10px;
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+    }
+    .modern-separator {
+      border: none;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #ffb6c1, transparent);
+      margin: 2rem 0;
+      position: relative;
+    }
+    .modern-separator::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 10px;
+      background: #ffb6c1;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(255, 182, 193, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Animasi -->
+  <div class="background-elements" id="background"></div>
+
+  <div class="album-container">
+    <h1 class="album-title">Album Kenangan Perjalanan</h1>
+    <div class="photo-grid">
+      <!-- Videos -->
+      <div class="photo-card locked" data-unlocked="false" data-type="video">
+        <img src="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png" alt="Video Kenangan 1" style="filter: blur(5px);">
+        <video class="photo-video" style="display: none;" controls poster="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png">
+          <source src="video/1.mp4" type="video/mp4">
+          Browser Anda tidak mendukung tag video.
+        </video>
+        <div class="photo-caption">pretty</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="openCodeModal(this.parentElement.parentElement)">Masukkan Kode Rahasia</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false" data-type="video">
+        <img src="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png" alt="Video Kenangan 2" style="filter: blur(5px);">
+        <video class="photo-video" style="display: none;" controls poster="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png">
+          <source src="video/2.mp4" type="video/mp4">
+          Browser Anda tidak mendukung tag video.
+        </video>
+        <div class="photo-caption">muahh, gaeul</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="openCodeModal(this.parentElement.parentElement)">Masukkan Kode Rahasia</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false" data-type="video">
+        <img src="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png" alt="Video Kenangan 3" style="filter: blur(5px);">
+        <video class="photo-video" style="display: none;" controls poster="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png">
+          <source src="video/3.mp4" type="video/mp4">
+          Browser Anda tidak mendukung tag video.
+        </video>
+        <div class="photo-caption">hahaha kangen dak</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="openCodeModal(this.parentElement.parentElement)">Masukkan Kode Rahasia</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false" data-type="video">
+        <img src="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png" alt="Video Kenangan 4" style="filter: blur(5px);">
+        <video class="photo-video" style="display: none;" controls poster="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png">
+          <source src="video/4.mp4" type="video/mp4">
+          Browser Anda tidak mendukung tag video.
+        </video>
+        <div class="photo-caption">nih jg</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="openCodeModal(this.parentElement.parentElement)">Masukkan Kode Rahasia</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false" data-type="video">
+        <img src="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png" alt="Video Kenangan 5" style="filter: blur(5px);">
+        <video class="photo-video" style="display: none;" controls poster="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png">
+          <source src="video/5.mp4" type="video/mp4">
+          Browser Anda tidak mendukung tag video.
+        </video>
+        <div class="photo-caption">nih jg syg</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="openCodeModal(this.parentElement.parentElement)">Masukkan Kode Rahasia</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false" data-type="video">
+        <img src="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png" alt="Video Kenangan 6" style="filter: blur(5px);">
+        <video class="photo-video" style="display: none;" controls poster="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png">
+          <source src="video/6.mp4" type="video/mp4">
+          Browser Anda tidak mendukung tag video.
+        </video>
+        <div class="photo-caption">sehatt liat senyum</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="openCodeModal(this.parentElement.parentElement)">Masukkan Kode Rahasia</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false" data-type="video">
+        <img src="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png" alt="Video Kenangan 7" style="filter: blur(5px);">
+        <video class="photo-video" style="display: none;" controls poster="https://e7.pngegg.com/pngimages/725/940/png-clipart-vimeo-youtube-logo-video-youtube-angle-triangle.png">
+          <source src="video/7.mp4" type="video/mp4">
+          Browser Anda tidak mendukung tag video.
+        </video>
+        <div class="photo-caption">mamang</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="openCodeModal(this.parentElement.parentElement)">Masukkan Kode Rahasia</button>
+        </div>
+      </div>
+      <!-- Modern Separator -->
+      <hr class="modern-separator">
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/1.jpg" alt="Kenangan 1" style="filter: blur(5px);">
+        <div class="photo-caption">ini lucuuu nian</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/1.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/2.jpg" alt="Kenangan 2" style="filter: blur(5px);">
+        <div class="photo-caption">bidadari dk boleh kepanasan</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/2.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/3.jpg" alt="Kenangan 3" style="filter: blur(5px);">
+        <div class="photo-caption">first tos wkwkwk</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/3.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/4.jpg" alt="Kenangan 4" style="filter: blur(5px);">
+        <div class="photo-caption">aku mw couple</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/4.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/5.jpg" alt="Kenangan 5" style="filter: blur(5px);">
+        <div class="photo-caption">foto yg paling sering ku pandangin wkwkkw cantik nian</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/5.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/6.jpg" alt="Kenangan 6" style="filter: blur(5px);">
+        <div class="photo-caption">sumpah ini kek elf</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/6.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/7.jpg" alt="Kenangan 7" style="filter: blur(5px);">
+        <div class="photo-caption">Video Kenangan Spesial</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/7.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/8.jpg" alt="Kenangan 8" style="filter: blur(5px);">
+        <div class="photo-caption">the first gif </div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/8.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/9.jpg" alt="Kenangan 9" style="filter: blur(5px);">
+        <div class="photo-caption">first</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/9.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/10.jpg" alt="Kenangan 10" style="filter: blur(5px);">
+        <div class="photo-caption">serius amat banh</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/10.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/11.jpg" alt="Kenangan 11" style="filter: blur(5px);">
+        <div class="photo-caption">cihuy cantiknyaa</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/11.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/12.jpg" alt="Kenangan 12" style="filter: blur(5px);">
+        <div class="photo-caption">kek yg nyago kudo samo yg punyo kudo jir</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/12.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/13.jpg" alt="Kenangan 13" style="filter: blur(5px);">
+        <div class="photo-caption">Kacomatony dak cocok woi yg aku wkwkwk</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/13.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/14.jpg" alt="Kenangan 14" style="filter: blur(5px);">
+        <div class="photo-caption">cebelapa imut</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/14.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/15.jpg" alt="Kenangan 15" style="filter: blur(5px);">
+        <div class="photo-caption">assalamualaikum unsri</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/15.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/16.jpg" alt="Kenangan 16" style="filter: blur(5px);">
+        <div class="photo-caption">my girl</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/16.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/17.jpg" alt="Kenangan 17" style="filter: blur(5px);">
+        <div class="photo-caption">my girlll</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/17.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/18.jpg" alt="Kenangan 18" style="filter: blur(5px);">
+        <div class="photo-caption">unsri nih yee</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/18.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+      <div class="photo-card locked" data-unlocked="false">
+        <img src="foto/19.jpg" alt="Kenangan 19" style="filter: blur(5px);">
+        <div class="photo-caption">so prety...</div>
+        <div class="puzzle-btn-container">
+          <button class="puzzle-btn" onclick="startPuzzle(this.parentElement.parentElement, 'foto/19.jpg')">Mainkan Puzzle</button>
+        </div>
+      </div>
+    </div>
+    <button class="back-btn" onclick="window.location.href='utama.html'">Kembali ke Halaman Utama</button>
+  </div>
+
+  <!-- Puzzle Game Modal -->
+  <div class="puzzle-game" id="puzzle-game">
+    <div class="puzzle-container">
+      <h2 style="color: #ffb6c1;">Susun Puzzle untuk Membuka Kenangan!</h2>
+      <div class="puzzle-grid" id="puzzle-grid"></div>
+      <div class="secret-code-container">
+        <input type="text" id="secret-code-input" class="secret-code-input" placeholder="Masukkan kode rahasia">
+        <button class="secret-code-btn" onclick="checkSecretCode()">Gunakan Kode Rahasia</button>
+      </div>
+      <button class="close-puzzle" onclick="closePuzzle()">Tutup</button>
+    </div>
+  </div>
+
+  <!-- Code Modal -->
+  <div class="code-modal" id="code-modal">
+    <div class="code-container">
+      <h2 style="color: #ffb6c1;">Masukkan Kode Rahasia untuk Membuka Video!</h2>
+      <div class="secret-code-container">
+        <input type="text" id="video-code-input" class="secret-code-input" placeholder="Masukkan kode rahasia">
+        <button class="secret-code-btn" onclick="checkVideoCode()">Gunakan Kode Rahasia</button>
+      </div>
+      <button class="close-puzzle" onclick="closeCodeModal()">Tutup</button>
+    </div>
+  </div>
+
+  <!-- Image Modal -->
+  <div class="image-modal" id="image-modal">
+    <div class="modal-content">
+      <img class="modal-image" id="modal-image" src="" alt="" style="display: block;">
+      <video class="modal-video" id="modal-video" src="" controls style="display: none;"></video>
+      <div class="modal-caption" id="modal-caption"></div>
+      <button class="close-modal" onclick="closeModal()">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    // Get logged in user
+    const loggedInUser = localStorage.getItem('loggedInUser') || 'guest';
+
+    // Restrict access to only 'rani'
+    if (loggedInUser !== 'rani') {
+      alert('Access denied. Only Rani can access this album.');
+      window.location.href = 'index.html';
+    }
+
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      darkModeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+      localStorage.setItem('darkMode', isDarkMode);
+    });
+
+    // Load dark mode preference
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode === 'true') {
+      document.body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
+    }
+
+    // Load unlocked memories from localStorage
+    const unlockedMemories = JSON.parse(localStorage.getItem('unlockedMemories') || '[]');
+    unlockedMemories.forEach(index => {
+      const cards = document.querySelectorAll('.photo-card');
+      if (cards[index]) {
+        cards[index].classList.remove('locked');
+        cards[index].dataset.unlocked = 'true';
+        cards[index].querySelector('img').style.filter = 'none';
+        if (cards[index].dataset.type === 'video') {
+          cards[index].querySelector('img').style.display = 'none';
+          cards[index].querySelector('video').style.display = 'block';
+        }
+        cards[index].addEventListener('click', () => openModal(cards[index]));
+      }
+    });
+
+    let currentCard = null;
+    let puzzlePieces = [];
+    let correctOrder = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
+    function startPuzzle(card, imageSrc) {
+      currentCard = card;
+      const puzzleGame = document.getElementById('puzzle-game');
+      const puzzleGrid = document.getElementById('puzzle-grid');
+      puzzleGrid.innerHTML = '';
+
+      // Shuffle pieces
+      puzzlePieces = [...correctOrder].sort(() => Math.random() - 0.5);
+
+      // Create puzzle pieces
+      puzzlePieces.forEach((piece, index) => {
+        const pieceDiv = document.createElement('div');
+        pieceDiv.className = 'puzzle-piece';
+        pieceDiv.style.backgroundImage = `url(${imageSrc})`;
+        pieceDiv.style.backgroundPosition = `-${(piece % 3) * 100}px -${Math.floor(piece / 3) * 100}px`;
+        pieceDiv.dataset.index = index;
+        pieceDiv.addEventListener('click', () => movePiece(pieceDiv));
+        puzzleGrid.appendChild(pieceDiv);
+      });
+
+      puzzleGame.style.display = 'flex';
+    }
+
+    function movePiece(piece) {
+      const emptyIndex = puzzlePieces.indexOf(8); // Assuming 8 is empty
+      const pieceIndex = parseInt(piece.dataset.index);
+      const emptyPos = { x: emptyIndex % 3, y: Math.floor(emptyIndex / 3) };
+      const piecePos = { x: pieceIndex % 3, y: Math.floor(pieceIndex / 3) };
+
+      // Check if adjacent
+      if (Math.abs(emptyPos.x - piecePos.x) + Math.abs(emptyPos.y - piecePos.y) === 1) {
+        // Swap
+        [puzzlePieces[emptyIndex], puzzlePieces[pieceIndex]] = [puzzlePieces[pieceIndex], puzzlePieces[emptyIndex]];
+        piece.dataset.index = emptyIndex;
+
+        // Update positions
+        updatePuzzleDisplay();
+
+        // Check win
+        if (JSON.stringify(puzzlePieces) === JSON.stringify(correctOrder)) {
+          setTimeout(() => {
+            unlockCard();
+          }, 500);
+        }
+      }
+    }
+
+    function updatePuzzleDisplay() {
+      const pieces = document.querySelectorAll('.puzzle-piece');
+      pieces.forEach((piece, index) => {
+        const pieceValue = puzzlePieces[index];
+        piece.style.backgroundPosition = `-${(pieceValue % 3) * 100}px -${Math.floor(pieceValue / 3) * 100}px`;
+        piece.dataset.index = index;
+      });
+    }
+
+    function unlockCard() {
+      if (currentCard) {
+        currentCard.classList.remove('locked');
+        currentCard.dataset.unlocked = 'true';
+        currentCard.querySelector('img').style.filter = 'none';
+        closePuzzle();
+        alert('Selamat! Kenangan berhasil dibuka! 🎉');
+
+        // Save unlocked memory to localStorage
+        const unlockedMemories = JSON.parse(localStorage.getItem('unlockedMemories') || '[]');
+        const memoryIndex = Array.from(document.querySelectorAll('.photo-card')).indexOf(currentCard);
+        if (!unlockedMemories.includes(memoryIndex)) {
+          unlockedMemories.push(memoryIndex);
+          localStorage.setItem('unlockedMemories', JSON.stringify(unlockedMemories));
+        }
+      }
+    }
+
+    function closePuzzle() {
+      document.getElementById('puzzle-game').style.display = 'none';
+    }
+
+    function checkSecretCode() {
+      const input = document.getElementById('secret-code-input').value.trim();
+      if (input === 'rizkiganteng') {
+        unlockCard();
+      } else {
+        alert('Kode rahasia salah! Coba lagi.');
+      }
+      document.getElementById('secret-code-input').value = '';
+    }
+
+    function openCodeModal(card) {
+      currentCard = card;
+      document.getElementById('code-modal').style.display = 'flex';
+    }
+
+    function closeCodeModal() {
+      document.getElementById('code-modal').style.display = 'none';
+    }
+
+    function checkVideoCode() {
+      const input = document.getElementById('video-code-input').value.trim();
+      if (input === '8112024') {
+        unlockVideoCard();
+      } else {
+        alert('Kode rahasia salah! Coba lagi.');
+      }
+      document.getElementById('video-code-input').value = '';
+    }
+
+    function unlockVideoCard() {
+      if (currentCard) {
+        currentCard.classList.remove('locked');
+        currentCard.dataset.unlocked = 'true';
+        currentCard.querySelector('img').style.display = 'none';
+        currentCard.querySelector('video').style.display = 'block';
+        closeCodeModal();
+        alert('Selamat! Video kenangan berhasil dibuka! 🎉');
+
+        // Save unlocked memory to localStorage
+        const unlockedMemories = JSON.parse(localStorage.getItem('unlockedMemories') || '[]');
+        const memoryIndex = Array.from(document.querySelectorAll('.photo-card')).indexOf(currentCard);
+        if (!unlockedMemories.includes(memoryIndex)) {
+          unlockedMemories.push(memoryIndex);
+          localStorage.setItem('unlockedMemories', JSON.stringify(unlockedMemories));
+        }
+      }
+    }
+
+    function openModal(card) {
+      if (card.dataset.unlocked === 'true') {
+        const caption = card.querySelector('.photo-caption').textContent;
+        document.getElementById('modal-caption').textContent = caption;
+        if (card.dataset.type === 'video') {
+          const video = card.querySelector('video');
+          document.getElementById('modal-video').src = video.querySelector('source').src;
+          document.getElementById('modal-image').style.display = 'none';
+          document.getElementById('modal-video').style.display = 'block';
+        } else {
+          const img = card.querySelector('img');
+          document.getElementById('modal-image').src = img.src;
+          document.getElementById('modal-image').style.display = 'block';
+          document.getElementById('modal-video').style.display = 'none';
+        }
+        document.getElementById('image-modal').style.display = 'flex';
+      }
+    }
+
+    function closeModal() {
+      document.getElementById('image-modal').style.display = 'none';
+      document.getElementById('modal-video').pause();
+    }
+
+    // Add click event to unlocked cards
+    document.querySelectorAll('.photo-card[data-unlocked="true"]').forEach(card => {
+      card.addEventListener('click', () => openModal(card));
+    });
+
+    // Animasi background bunga/hati
+    const bg = document.getElementById('background');
+    const emojis = ['', '', '', '', '', ''];
+    for (let i = 0; i < 15; i++) {
+      const el = document.createElement('div');
+      el.className = 'floating';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.top = Math.random() * 100 + 'vh';
+      el.style.fontSize = (16 + Math.random() * 20) + 'px';
+      el.style.animationDelay = Math.random() * 10 + 's';
+      bg.appendChild(el);
+    }
+  </script>
+</body>
+</html>

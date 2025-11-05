@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Surat Cinta</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <button id="dark-mode-toggle" class="dark-mode-btn">🌙</button>
+  <!-- Background Animasi -->
+  <div class="background-elements" id="background"></div>
+
+  <!-- Back Button -->
+  <div style="position: fixed; top: 20px; left: 20px; z-index: 10;">
+    <button onclick="window.location.href='utama.html'" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50px; padding: 10px 20px; color: white; cursor: pointer; font-size: 1rem;">← Kembali</button>
+  </div>
+
+  <!-- Surat Cinta (Clean Futuristik) -->
+  <section class="section" style="display: flex; justify-content: center; align-items: center; min-height: 100vh;">
+    <div class="letter-wrapper" style="max-width: 800px; width: 100%;">
+      <div class="scroll-letter open" style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 3rem; box-shadow: 0 20px 60px rgba(255, 107, 157, 0.2);">
+        <div class="scroll-content" style="color: #fff; text-align: center;">
+          <h2 style="font-size: 2.5rem; margin-bottom: 2rem; color: #ffb6c1;">Untuk Raniku Tersayang,</h2>
+          <p style="font-size: 1.3rem; line-height: 1.8; margin-bottom: 1.5rem;">1 thun dah kito capai, tiap detik barengmu kek episode di series fav</p>
+          <p style="font-size: 1.3rem; line-height: 1.8; margin-bottom: 1.5rem;">kito dah banyak ngelewati berbagi hal dari mulai seneng, sedih, bahkan sedikit luka(ea), itu yang buat kito tumbuh bareng jadi lebih dewasa, kau alasan aku kenapo aku harus terus jadi lebih baik</p>
+          <p style="font-size: 1.3rem; line-height: 1.8; margin-bottom: 1.5rem;">akuu tuu sayangggggggg nian samo kau tau dak, lebih dari yang kau bayangin, ini first experience ku, belom pernah ak sesayang ini samo cwee</p>
+          <p style="font-size: 1.3rem; line-height: 1.8; margin-bottom: 1.5rem;">365 days with you.</p>
+          <p style="font-size: 1.5rem; font-weight: bold; margin-top: 2rem;">Dari ku untukmu<br><strong style="color: #ff6b9d;"> iloveyou Ran</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      darkModeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+      localStorage.setItem('darkMode', isDarkMode);
+    });
+
+    // Load dark mode preference
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode === 'true') {
+      document.body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
+    }
+  </script>
+  <script src="main.js"></script>
+</body>
+</html>

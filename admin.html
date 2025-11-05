@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Anniversary Website</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+  <button id="dark-mode-toggle" class="dark-mode-btn">🌙</button>
+  <!-- Background Animasi -->
+  <div class="background-elements" id="background"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="logo">❤️ Admin Panel</div>
+    </div>
+  </header>
+
+  <!-- Admin Section -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Dashboard Analytics</h2>
+      <div class="analytics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+        <div class="analytics-card" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 2rem; text-align: center; border: 1px solid rgba(255, 255, 255, 0.2);">
+          <h3 style="color: #ffb6c1; margin-bottom: 1rem;">Total Pengunjung</h3>
+          <p id="total-visitors" style="font-size: 2rem; font-weight: bold; color: #ff6b9d;">0</p>
+        </div>
+        <div class="analytics-card" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 2rem; text-align: center; border: 1px solid rgba(255, 255, 255, 0.2);">
+          <h3 style="color: #ffb6c1; margin-bottom: 1rem;">Total Balasan</h3>
+          <p id="total-replies" style="font-size: 2rem; font-weight: bold; color: #ff6b9d;">0</p>
+        </div>
+        <div class="analytics-card" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 20px; padding: 2rem; text-align: center; border: 1px solid rgba(255, 255, 255, 0.2);">
+          <h3 style="color: #ffb6c1; margin-bottom: 1rem;">Pengunjung Hari Ini</h3>
+          <p id="today-visitors" style="font-size: 2rem; font-weight: bold; color: #ff6b9d;">0</p>
+        </div>
+      </div>
+      <h2 class="section-title">Surat Balasan dari User & Guest</h2>
+      <div id="replies-list" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border-radius: 25px; padding: 2rem; margin-top: 2rem;">
+        <!-- Replies will be loaded here -->
+      </div>
+      <button onclick="window.location.href='index.html'" style="background: linear-gradient(to right, #ff6b9d, #ff8fab); color: white; border: none; padding: 1rem 2rem; border-radius: 50px; cursor: pointer; font-size: 1.2rem; margin-top: 2rem;">Kembali ke Website</button>
+    </div>
+  </section>
+
+  <script>
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      darkModeToggle.textContent = isDarkMode ? '☀️' : '🌙';
+      localStorage.setItem('darkMode', isDarkMode);
+    });
+
+    // Load dark mode preference
+    const savedDarkMode = localStorage.getItem('darkMode');
+    if (savedDarkMode === 'true') {
+      document.body.classList.add('dark-mode');
+      darkModeToggle.textContent = '☀️';
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const role = localStorage.getItem('role');
+      if (role !== 'admin') {
+        window.location.href = 'index.html';
+      }
+
+      // Analytics Data
+      const visitors = JSON.parse(localStorage.getItem('visitors') || '[]');
+      const replies = JSON.parse(localStorage.getItem('replies') || '[]');
+      const today = new Date().toDateString();
+      const todayVisitors = visitors.filter(v => new Date(v.timestamp).toDateString() === today).length;
+
+      document.getElementById('total-visitors').textContent = visitors.length;
+      document.getElementById('total-replies').textContent = replies.length;
+      document.getElementById('today-visitors').textContent = todayVisitors;
+
+      // Load replies from localStorage
+      const repliesList = document.getElementById('replies-list');
+
+      if (replies.length === 0) {
+        repliesList.innerHTML = '<p style="color: #fff; text-align: center;">Belum ada surat balasan.</p>';
+      } else {
+        replies.forEach(reply => {
+          const replyDiv = document.createElement('div');
+          replyDiv.style.background = 'rgba(255, 255, 255, 0.05)';
+          replyDiv.style.borderRadius = '15px';
+          replyDiv.style.padding = '1rem';
+          replyDiv.style.marginBottom = '1rem';
+          replyDiv.innerHTML = `<p style="color: #fff;"><strong>${reply.name || 'Guest'}:</strong> ${reply.message}</p><small style="color: rgba(255, 255, 255, 0.7);">${reply.timestamp}</small>`;
+          repliesList.appendChild(replyDiv);
+        });
+      }
+
+      // Animasi background
+      const bg = document.getElementById('background');
+      const emojis = ['', '', '', '', '', ''];
+      for (let i = 0; i < 15; i++) {
+        const el = document.createElement('div');
+        el.className = 'floating';
+        el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top = Math.random() * 100 + 'vh';
+        el.style.fontSize = (16 + Math.random() * 20) + 'px';
+        el.style.animationDelay = Math.random() * 10 + 's';
+        bg.appendChild(el);
+      }
+    });
+  </script>
+</body>
+</html>

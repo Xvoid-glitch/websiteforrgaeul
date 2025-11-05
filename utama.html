@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Website khusus untuk rani sayanggg </title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- Particle.js -->
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+  <!-- Dark Mode Toggle -->
+  <button id="dark-mode-toggle" class="dark-mode-btn">🌙</button>
+
+  <!-- Particle.js Background -->
+  <div id="particles-js" style="position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1;"></div>
+  <!-- Background Animasi -->
+  <div class="background-elements" id="background"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="logo">❤️ For Gaeul</div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h2>Hey, Imutkuu...</h2>
+        <h1>Kamu adalah alasan senyumku hari ini 💖</h1>
+        <p>deket samo kau tu gemess nian, entah itu dari komuk ataupun tingkah mu pokoknyoo iloveyou so much ran, web ini aku kerjoin kurang lebih seminggu lah dibantu asep jg mikir konsepny, walaupun dak banyak yg aku kasih ke kau semoga kau seneng. makasih sayang sudah bertahan sampe sejauh ini.</p>
+        <p>lope lope gerak jangan lupo di klik ye hehehe</p>
+        <button id="open-letter-btn" class="btn-primary glow">Buka Surat Cintaku</button>
+      </div>
+      <div class="hero-image">
+        <div class="heart-glow" onclick="window.location.href='album.html'">
+          <i class="fas fa-heart"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+ 
+
+  <!-- Kenangan (Timeline Foto) -->
+  <section id="memories-section" class="section hidden">
+    <div class="container">
+      <h2 class="section-title">Kenangan Kita 💞</h2>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <div class="progress-text" id="progress-text">Kenangan Terbuka: 0/6</div>
+      </div>
+      <div class="badges-container" id="badges-container">
+        <!-- Badges will be added here dynamically -->
+      </div>
+      <div class="timeline">
+        <!-- Ganti src dengan foto kalian -->
+        <div class="timeline-item left">
+          <img src="https://via.placeholder.com/300x300/f8a5c2/ffffff?text=Kita+1" alt="Kenangan 1">
+          <div class="caption">Pertama kali ketemu</div>
+        </div>
+        <div class="timeline-item right">
+          <img src="https://via.placeholder.com/300x300/f8a5c2/ffffff?text=Kita+2" alt="Kenangan 2">
+          <div class="caption">Jalan-jalan pertama</div>
+        </div>
+        <div class="timeline-item left">
+          <img src="https://via.placeholder.com/300x300/f8a5c2/ffffff?text=Kita+3" alt="Kenangan 3">
+          <div class="caption">Masak bareng 😋</div>
+        </div>
+        <div class="timeline-item right">
+          <img src="https://via.placeholder.com/300x300/f8a5c2/ffffff?text=Kita+4" alt="Kenangan 4">
+          <div class="caption">Liburan ke pantai</div>
+        </div>
+        <div class="timeline-item left">
+          <img src="https://via.placeholder.com/300x300/f8a5c2/ffffff?text=Kita+5" alt="Kenangan 5">
+          <div class="caption">Malam bintang ✨</div>
+        </div>
+        <div class="timeline-item right">
+          <img src="https://via.placeholder.com/300x300/f8a5c2/ffffff?text=Kita+6" alt="Kenangan 6">
+          <div class="caption">365 Hari Cinta 💞</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Balasan Cinta -->
+  <section id="reply-section" class="section hidden">
+    <div class="container">
+      <div class="reply-box glow">
+        <h2>Kirim Balasan surat biar si rizki biso baco 💬</h2>
+        <p>Aku pengen dengar ap yang kau rasoin...</p>
+        <textarea id="reply-text" placeholder="Tulis pesan cintamu di sini..."></textarea>
+        <button id="send-reply-btn" class="btn-primary">Kirim -syaratny harus cium dulu hehe 💘</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>website by ksatria yang selalu belajar dari kesalahan ❤️ & litle help from asep | M.R.S</p>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
