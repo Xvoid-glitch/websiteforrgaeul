@@ -436,15 +436,21 @@
 
       // Store username in localStorage
       localStorage.setItem('loggedInUser', username);
+      // Store login status in localStorage
+      localStorage.setItem('loggedIn', 'true');
 
       if (username === 'admin') {
         localStorage.setItem('role', 'admin');
         window.location.href = 'admin.html';
       } else if (username === 'rani') {
+        localStorage.setItem('role', 'user');
+        localStorage.setItem('name', username);
         alert('Selamat datang, Rani!');
         window.location.href = 'utama.html';
       } else {
         // User biasa
+        localStorage.setItem('role', 'user');
+        localStorage.setItem('name', username);
         window.location.href = 'utama.html';
       }
     });

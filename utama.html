@@ -104,9 +104,25 @@
   <footer>
     <div class="container">
       <p>website by ksatria yang selalu belajar dari kesalahan ❤️ & litle help from asep | M.R.S</p>
+      <button id="logout-btn" style="background: rgba(255, 255, 255, 0.1); color: white; border: 1px solid rgba(255, 255, 255, 0.2); padding: 0.5rem 1rem; border-radius: 25px; cursor: pointer; margin-top: 1rem;">Logout</button>
     </div>
   </footer>
 
+  <script>
+    // Check login status on page load
+    if (localStorage.getItem('loggedIn') !== 'true') {
+      window.location.href = 'index.html';
+    }
+
+    // Logout functionality
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      localStorage.removeItem('loggedIn');
+      localStorage.removeItem('loggedInUser');
+      localStorage.removeItem('role');
+      localStorage.removeItem('name');
+      window.location.href = 'index.html';
+    });
+  </script>
   <script src="main.js"></script>
 </body>
 </html>
