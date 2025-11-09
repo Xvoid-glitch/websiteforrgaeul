@@ -361,14 +361,14 @@
     </div>
 
     <div class="buttons">
-      <button id="loginBtn">Login</button>
-      <button id="guestBtn">Masuk sebagai Pengunjung</button>
+      <button id="enterBtn">Masuk</button>
+      <button id="adminBtn">Masuk sebagai Admin</button>
     </div>
 
-    <!-- Form Login -->
-    <div class="login-form" id="loginForm">
-      <h2>Login</h2>
-      <input type="text" placeholder="Username" />
+    <!-- Form Admin Password -->
+    <div class="login-form" id="adminForm">
+      <h2>Masuk sebagai Admin</h2>
+      <input type="password" placeholder="Password" />
       <button>Masuk</button>
     </div>
   </div>
@@ -377,34 +377,34 @@
   <div class="overlay" id="overlay"></div>
 
   <script>
-    const loginBtn = document.getElementById('loginBtn');
-    const guestBtn = document.getElementById('guestBtn');
-    const loginForm = document.getElementById('loginForm');
+    const enterBtn = document.getElementById('enterBtn');
+    const adminBtn = document.getElementById('adminBtn');
+    const adminForm = document.getElementById('adminForm');
     const pageCloseBtn = document.getElementById('pageCloseBtn');
     const overlay = document.getElementById('overlay');
     const mainContainer = document.getElementById('mainContainer');
 
-    loginBtn.addEventListener('click', () => {
-      loginForm.style.display = 'block';
-      overlay.style.display = 'block';
-      // Fokus ke input pertama
-      setTimeout(() => {
-        loginForm.querySelector('input[type="text"]').focus();
-      }, 500);
-    });
-
-    guestBtn.addEventListener('click', () => {
+    enterBtn.addEventListener('click', () => {
       window.location.href = 'utama.html';
     });
 
+    adminBtn.addEventListener('click', () => {
+      adminForm.style.display = 'block';
+      overlay.style.display = 'block';
+      // Fokus ke input password
+      setTimeout(() => {
+        adminForm.querySelector('input[type="password"]').focus();
+      }, 500);
+    });
+
     pageCloseBtn.addEventListener('click', () => {
-      loginForm.style.display = 'none';
+      adminForm.style.display = 'none';
       overlay.style.display = 'none';
     });
 
     // Tutup form jika klik di luar
     overlay.addEventListener('click', () => {
-      loginForm.style.display = 'none';
+      adminForm.style.display = 'none';
       overlay.style.display = 'none';
     });
 
@@ -424,34 +424,17 @@
       darkModeToggle.textContent = '☀️';
     }
 
-    // Login functionality
-    const loginButton = loginForm.querySelector('button');
-    loginButton.addEventListener('click', () => {
-      const username = loginForm.querySelector('input[type="text"]').value.trim().toLowerCase();
+    // Admin login functionality
+    const adminLoginButton = adminForm.querySelector('button');
+    adminLoginButton.addEventListener('click', () => {
+      const password = adminForm.querySelector('input[type="password"]').value.trim();
 
-      if (username === '') {
-        alert('Please enter a username');
-        return;
-      }
-
-      // Store username in localStorage
-      localStorage.setItem('loggedInUser', username);
-      // Store login status in localStorage
-      localStorage.setItem('loggedIn', 'true');
-
-      if (username === 'admin') {
+      if (password === 'admin123') {
         localStorage.setItem('role', 'admin');
+        localStorage.setItem('loggedIn', 'true');
         window.location.href = 'admin.html';
-      } else if (username === 'rani') {
-        localStorage.setItem('role', 'user');
-        localStorage.setItem('name', username);
-        alert('Selamat datang, Rani!');
-        window.location.href = 'utama.html';
       } else {
-        // User biasa
-        localStorage.setItem('role', 'user');
-        localStorage.setItem('name', username);
-        window.location.href = 'utama.html';
+        alert('Password salah!');
       }
     });
   </script>
