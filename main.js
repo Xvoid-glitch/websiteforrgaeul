@@ -3,11 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const role = localStorage.getItem('role');
   const name = localStorage.getItem('name');
 
-  if (!role) {
-    window.location.href = 'index.html';
-  }
-
-  // Show notification for user
+  // Show notification for user (only if they logged in as user before)
   if (role === 'user' && name) {
     setTimeout(() => {
       alert(`Hai ${name} imutt`);
